@@ -16,14 +16,6 @@ NC='\033[0m' # No Color
 # Starplex Plugin Installer Script for Enigma2
 # ==========================================================
 
-echo -e "${CYAN}${BOLD}"
-echo "  ____  _                  _           "
-echo " / ___|| |_ __ _ _ __ _ __| | _____  __"
-echo " \___ \| __/ _\` | '__| '__| |/ _ \ \/ /"
-echo "  ___) | || (_| | |  | |  | |  __/>  < "
-echo " |____/ \__\__,_|_|  |_|  |_|\___/_/\_\\"
-echo "                                       "
-echo -e "${NC}"
 
 echo -e "${BLUE}==========================================================${NC}"
 echo -e "${BOLD}${YELLOW}          Starplex Plugin Installer Started             ${NC}"
