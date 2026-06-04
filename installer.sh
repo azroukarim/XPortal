@@ -41,6 +41,15 @@ rm -f $IPK_TMP
 
 echo "=========================================================="
 echo "       Starplex Plugin Installed Successfully!          "
+echo "                                                        "
+echo " ******************** MESSAGE ********************      "
+echo " This plugin is free and will remain free forever,      "
+echo " as long as not a single euro was spent on it!          "
+echo "                                                        "
+echo " Best regards and thanks to everyone.                   "
+echo " - Karim                                                "
+echo " *************************************************      "
+echo "                                                        "
 echo "       Enigma2 GUI will restart in 3 seconds...         "
 echo "=========================================================="
 sleep 3
