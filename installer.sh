@@ -30,7 +30,7 @@ echo -e "      ${GREEN}✓ Old version removed.${NC}\n"
 
 # 2. Download the new version
 echo -e "${CYAN}[2/5]${NC} ${BOLD}Downloading latest IPK from GitHub...${NC}"
-URL="https://github.com/azroukarim/starplex/raw/refs/heads/main/enigma2-plugin-extensions-starplex_v1.0_all.ipk"
+URL="https://github.com/azroukarim/starplex/raw/refs/heads/main/enigma2-plugin-extensions-starplex_v1.1_all.ipk"
 IPK_TMP="/tmp/starplex_install.ipk"
 
 wget -q --show-progress -O $IPK_TMP $URL
