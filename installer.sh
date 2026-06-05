@@ -13,25 +13,25 @@ BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # ==========================================================
-# Starplex Plugin Installer Script for Enigma2
+# XPortal Plugin Installer Script for Enigma2
 # ==========================================================
 
 
 echo -e "${BLUE}==========================================================${NC}"
-echo -e "${BOLD}${YELLOW}          Starplex Plugin Installer Started             ${NC}"
+echo -e "${BOLD}${YELLOW}          XPortal Plugin Installer Started             ${NC}"
 echo -e "${BLUE}==========================================================${NC}"
 echo ""
 
 # 1. Remove old version completely
 echo -e "${CYAN}[1/5]${NC} ${BOLD}Removing old version...${NC}"
-opkg remove enigma2-plugin-extensions-starplex --force-depends > /dev/null 2>&1
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/Starplex > /dev/null 2>&1
+opkg remove enigma2-plugin-extensions-xportal --force-depends > /dev/null 2>&1
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XPortal > /dev/null 2>&1
 echo -e "      ${GREEN}✓ Old version removed.${NC}\n"
 
 # 2. Download the new version
 echo -e "${CYAN}[2/5]${NC} ${BOLD}Downloading latest IPK from GitHub...${NC}"
-URL="https://github.com/azroukarim/starplex/raw/refs/heads/main/enigma2-plugin-extensions-starplex_v1.1_all.ipk"
-IPK_TMP="/tmp/starplex_install.ipk"
+URL="https://github.com/azroukarim/xportal/raw/refs/heads/main/enigma2-plugin-extensions-xportal_v1.0_all.ipk"
+IPK_TMP="/tmp/xportal_install.ipk"
 
 wget -q --show-progress -O $IPK_TMP $URL
 
@@ -48,7 +48,7 @@ opkg install python3-requests python3-twisted enigma2-plugin-systemplugins-servi
 echo -e "      ${GREEN}✓ Dependencies installed.${NC}\n"
 
 # 4. Install the plugin
-echo -e "${CYAN}[4/5]${NC} ${BOLD}Installing Starplex Plugin...${NC}"
+echo -e "${CYAN}[4/5]${NC} ${BOLD}Installing XPortal Plugin...${NC}"
 opkg install --force-reinstall --force-overwrite $IPK_TMP
 echo -e "      ${GREEN}✓ Plugin installed successfully.${NC}\n"
 
@@ -58,7 +58,7 @@ rm -f $IPK_TMP
 echo -e "      ${GREEN}✓ Clean up done.${NC}\n"
 
 echo -e "${BLUE}==========================================================${NC}"
-echo -e "${BOLD}${GREEN}       Starplex Plugin Installed Successfully!          ${NC}"
+echo -e "${BOLD}${GREEN}       XPortal Plugin Installed Successfully!          ${NC}"
 echo -e "${BLUE}==========================================================${NC}"
 echo ""
 echo -e "${MAGENTA} ******************** MESSAGE ********************      ${NC}"
