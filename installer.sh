@@ -1,75 +1,82 @@
 #!/bin/sh
 
-# ==========================================================
-# Colors
-# ==========================================================
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-MAGENTA='\033[0;35m'
-BOLD='\033[1m'
-NC='\033[0m' # No Color
+echo "=================================================================="
+echo "   XPortal Plugin Online Installer"
+echo "=================================================================="
 
-# ==========================================================
-# XPortal Plugin Installer Script for Enigma2
-# ==========================================================
+# Check Python version
+PY_FULL_VER=$(python3 -c 'import sys; print("%d.%d.%d" % sys.version_info[:3])' 2>/dev/null)
 
-
-echo -e "${BLUE}==========================================================${NC}"
-echo -e "${BOLD}${YELLOW}          XPortal Plugin Installer Started             ${NC}"
-echo -e "${BLUE}==========================================================${NC}"
-echo ""
-
-# 1. Remove old version completely
-echo -e "${CYAN}[1/5]${NC} ${BOLD}Removing old version...${NC}"
-opkg remove enigma2-plugin-extensions-xportal --force-depends > /dev/null 2>&1
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XPortal > /dev/null 2>&1
-echo -e "      ${GREEN}✓ Old version removed.${NC}\n"
-
-# 2. Download the new version
-echo -e "${CYAN}[2/5]${NC} ${BOLD}Downloading latest IPK from GitHub...${NC}"
-URL="https://github.com/azroukarim/XPortal/blob/main/enigma2-plugin-extensions-xportal_2.0_py3.14.5_all.ipk"
-IPK_TMP="/tmp/xportal_install.ipk"
-
-wget -q --show-progress -O $IPK_TMP $URL
-
-if [ ! -f $IPK_TMP ]; then
-    echo -e "      ${RED}✗ Error: Failed to download the file. Please check your internet connection or URL.${NC}"
+if [ -z "$PY_FULL_VER" ]; then
+    echo "Error: Python 3 is required but not found on this system."
     exit 1
 fi
-echo -e "      ${GREEN}✓ Download complete.${NC}\n"
 
-# 3. Install required dependencies
-echo -e "${CYAN}[3/5]${NC} ${BOLD}Installing required dependencies (requests, twisted, serviceapp, players)...${NC}"
-opkg update > /dev/null 2>&1
-opkg install python3-requests python3-twisted enigma2-plugin-systemplugins-serviceapp exteplayer3 gstplayer > /dev/null 2>&1
-echo -e "      ${GREEN}✓ Dependencies installed.${NC}\n"
+echo "Detected Python version: $PY_FULL_VER"
 
-# 4. Install the plugin
-echo -e "${CYAN}[4/5]${NC} ${BOLD}Installing XPortal Plugin...${NC}"
-opkg install --force-reinstall --force-overwrite $IPK_TMP
-echo -e "      ${GREEN}✓ Plugin installed successfully.${NC}\n"
+# Direct download links provided
+URL_314="https://github.com/azroukarim/XPortal/raw/refs/heads/main/enigma2-plugin-extensions-xportal_2.0_py3.14.5_all.ipk"
+URL_313="https://github.com/azroukarim/XPortal/raw/refs/heads/main/enigma2-plugin-extensions-xportal_2.0_py3.13.12_all.ipk"
 
-# 5. Clean up and restart GUI
-echo -e "${CYAN}[5/5]${NC} ${BOLD}Cleaning up...${NC}"
-rm -f $IPK_TMP
-echo -e "      ${GREEN}✓ Clean up done.${NC}\n"
+DOWNLOAD_URL=""
 
-echo -e "${BLUE}==========================================================${NC}"
-echo -e "${BOLD}${GREEN}       XPortal Plugin Installed Successfully!          ${NC}"
-echo -e "${BLUE}==========================================================${NC}"
-echo ""
-echo -e "${MAGENTA} ******************** MESSAGE ********************      ${NC}"
-echo -e "${BOLD} This plugin is free and will remain free forever,      ${NC}"
-echo -e "${BOLD} as long as not a single euro was spent on it!          ${NC}"
-echo -e "                                                        "
-echo -e "${CYAN} Best regards and thanks to everyone.                   ${NC}"
-echo -e "${CYAN} - Karim                                                ${NC}"
-echo -e "${MAGENTA} *************************************************      ${NC}"
-echo ""
-echo -e "${YELLOW}       Enigma2 GUI will restart in 3 seconds...         ${NC}"
-echo -e "${BLUE}==========================================================${NC}"
-sleep 3
-killall -9 enigma2
+# Match python version to appropriate download link
+case "$PY_FULL_VER" in
+    3.14.*)
+        DOWNLOAD_URL="$URL_314"
+        ;;
+    3.13.*)
+        DOWNLOAD_URL="$URL_313"
+        ;;
+    3.12.*)
+        # Using 3.13 package for 3.12 as a compatible match or fallback
+        echo "Python 3.12 detected. Using Python 3.13 package."
+        DOWNLOAD_URL="$URL_313"
+        ;;
+    *)
+        # Default fallback to 3.13
+        echo "Warning: Python version $PY_FULL_VER is not explicitly matched. Attempting to use Python 3.13 package."
+        DOWNLOAD_URL="$URL_313"
+        ;;
+esac
+
+# Check for download tools (wget or curl)
+# Note: --no-check-certificate / -k is used because Enigma2 devices often lack updated SSL certificates
+if command -v wget >/dev/null 2>&1; then
+    DOWNLOAD_CMD="wget --no-check-certificate -qO /tmp/xportal.ipk"
+elif command -v curl >/dev/null 2>&1; then
+    DOWNLOAD_CMD="curl -k -Ls -o /tmp/xportal.ipk"
+else
+    echo "Error: Neither wget nor curl is installed on this system."
+    exit 1
+fi
+
+echo "Downloading package..."
+echo "Source: $DOWNLOAD_URL"
+
+# Execute download
+$DOWNLOAD_CMD "$DOWNLOAD_URL"
+
+if [ $? -ne 0 ] || [ ! -f /tmp/xportal.ipk ] || [ ! -s /tmp/xportal.ipk ]; then
+    echo "Error: Download failed. Please check your internet connection."
+    rm -f /tmp/xportal.ipk
+    exit 1
+fi
+
+echo "Installing..."
+# Run opkg install
+opkg install /tmp/xportal.ipk
+
+if [ $? -eq 0 ]; then
+    echo "=================================================================="
+    echo "   Installation completed successfully!"
+    echo "   Please restart Enigma2 to apply changes."
+    echo "=================================================================="
+else
+    echo "=================================================================="
+    echo "   Installation failed! Check the output above for errors."
+    echo "=================================================================="
+fi
+
+# Clean up temporary installer file
+rm -f /tmp/xportal.ipk
