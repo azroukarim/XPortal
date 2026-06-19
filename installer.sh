@@ -30,7 +30,7 @@ echo -e "      ${GREEN}✓ Old version removed.${NC}\n"
 
 # 2. Download the new version
 echo -e "${CYAN}[2/5]${NC} ${BOLD}Downloading latest IPK from GitHub...${NC}"
-URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/enigma2-plugin-extensions-xportal_2.0_all.ipk"
+URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/enigma2-plugin-extensions-xportal_2.0_py3.14.5_all.ipk"
 IPK_TMP="/tmp/xportal_install.ipk"
 
 wget -q --show-progress -O $IPK_TMP $URL
