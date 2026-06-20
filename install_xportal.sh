@@ -5,7 +5,7 @@ echo "   XPortal Plugin Installer"
 echo "=================================================================="
 
 TAR_FILE="XPortal_py3_13_12.tar.gz"
-DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal_py3_13_12.tar.gz"
+DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal_py3.13.12.tar.gz"
 TMP_DIR="/tmp"
 EXTRACTED_DIR="$TMP_DIR/XPortal"
 DEST_DIR="/usr/lib/enigma2/python/Plugins/Extensions/XPortal"
