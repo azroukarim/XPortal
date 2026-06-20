@@ -4,8 +4,31 @@ echo "=================================================================="
 echo "   XPortal Plugin Installer"
 echo "=================================================================="
 
-TAR_FILE="XPortal_py3_13_12.tar.gz"
-DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-p3_13_12.tar.gz"
+# Detect Python version
+PY_VER=$(python3 -c 'import sys; print("%d.%d.%d" % sys.version_info[:3])' 2>/dev/null)
+
+if [ -z "$PY_VER" ]; then
+    echo "Error: Python 3 not found on this system."
+    exit 1
+fi
+
+echo "Detected Python version: $PY_VER"
+
+# Select download URL based on Python version
+case "$PY_VER" in
+    3.14.5)
+        DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_14_5.tar.gz"
+        ;;
+    3.13.12)
+        DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-p3_13_12.tar.gz"
+        ;;
+    *)
+        echo "Error: Python $PY_VER is not supported. Only 3.13.12 and 3.14.5 are supported."
+        exit 1
+        ;;
+esac
+
+TAR_FILE="XPortal.tar.gz"
 TMP_DIR="/tmp"
 EXTRACTED_DIR="$TMP_DIR/XPortal"
 DEST_DIR="/usr/lib/enigma2/python/Plugins/Extensions/XPortal"
@@ -20,7 +43,7 @@ else
     exit 1
 fi
 
-echo "[1/5] Downloading $TAR_FILE..."
+echo "[1/5] Downloading..."
 $DOWNLOAD_CMD "$TMP_DIR/$TAR_FILE" "$DOWNLOAD_URL"
 if [ $? -ne 0 ] || [ ! -f "$TMP_DIR/$TAR_FILE" ] || [ ! -s "$TMP_DIR/$TAR_FILE" ]; then
     echo "Error: Download failed. Check your internet connection."
@@ -42,13 +65,11 @@ if [ ! -d "$EXTRACTED_DIR" ]; then
 fi
 
 echo "[3/5] Installing to $DEST_DIR..."
-# Remove old version if exists
 if [ -d "$DEST_DIR" ]; then
     echo "  Removing old version..."
     rm -rf "$DEST_DIR"
 fi
 
-# Move new version
 mv "$EXTRACTED_DIR" "$DEST_DIR"
 if [ $? -ne 0 ]; then
     echo "Error: Failed to move files to $DEST_DIR"
