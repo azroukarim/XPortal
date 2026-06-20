@@ -61,8 +61,8 @@ if [ $? -ne 0 ] || [ ! -f /tmp/xportal.ipk ] || [ ! -s /tmp/xportal.ipk ]; then
 fi
 
 echo "Installing..."
-# Run opkg install
-opkg install /tmp/xportal.ipk
+# Run opkg install with --force-reinstall to handle already installed packages
+opkg install --force-reinstall /tmp/xportal.ipk
 
 if [ $? -eq 0 ]; then
     echo "=================================================================="
