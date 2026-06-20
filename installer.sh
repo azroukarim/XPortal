@@ -29,19 +29,16 @@ case "$PY_FULL_VER" in
         DOWNLOAD_URL="$URL_313"
         ;;
     3.12.*)
-        # Using 3.13 package for 3.12 as a compatible match or fallback
         echo "Python 3.12 detected. Using Python 3.13 package."
         DOWNLOAD_URL="$URL_313"
         ;;
     *)
-        # Default fallback to 3.13
         echo "Warning: Python version $PY_FULL_VER is not explicitly matched. Attempting to use Python 3.13 package."
         DOWNLOAD_URL="$URL_313"
         ;;
 esac
 
 # Check for download tools (wget or curl)
-# Note: --no-check-certificate / -k is used because Enigma2 devices often lack updated SSL certificates
 if command -v wget >/dev/null 2>&1; then
     DOWNLOAD_CMD="wget --no-check-certificate -qO /tmp/xportal.ipk"
 elif command -v curl >/dev/null 2>&1; then
@@ -70,8 +67,19 @@ opkg install /tmp/xportal.ipk
 if [ $? -eq 0 ]; then
     echo "=================================================================="
     echo "   Installation completed successfully!"
-    echo "   Please restart Enigma2 to apply changes."
     echo "=================================================================="
+
+    # Restart Enigma2
+    echo "   Restarting Enigma2..."
+    if command -v killall >/dev/null 2>&1; then
+        killall -9 enigma2
+    elif command -v init >/dev/null 2>&1; then
+        init 4
+        sleep 2
+        init 3
+    else
+        reboot
+    fi
 else
     echo "=================================================================="
     echo "   Installation failed! Check the output above for errors."
