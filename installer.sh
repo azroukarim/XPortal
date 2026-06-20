@@ -16,7 +16,7 @@ echo "Detected Python version: $PY_FULL_VER"
 
 # Direct download links provided
 URL_314="https://github.com/azroukarim/XPortal/raw/refs/heads/main/enigma2-plugin-extensions-xportal_2.0_py3.14.5_all.ipk"
-URL_313="https://github.com/azroukarim/XPortal/raw/refs/heads/main/enigma2-plugin-extensions-xportal_2.0_py3.13.12_all.ipk"
+URL_313="https://github.com/azroukarim/XPortal/raw/refs/heads/main/enigma2-plugin-extensions-xportal_2.1_py3.13.12_all.ipk"
 
 DOWNLOAD_URL=""
 
