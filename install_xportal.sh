@@ -16,14 +16,14 @@ echo "Detected Python version: $PY_VER"
 
 # Select download URL based on Python version
 case "$PY_VER" in
-    3.14.5)
+    3.14.*)
         DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_14_5.tar.gz"
         ;;
-    3.13.12)
+    3.13.*)
         DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-p3_13_12.tar.gz"
         ;;
     *)
-        echo "Error: Python $PY_VER is not supported. Only 3.13.12 and 3.14.5 are supported."
+        echo "Error: Python $PY_VER is not supported. Only 3.13.x and 3.14.x are supported."
         exit 1
         ;;
 esac
