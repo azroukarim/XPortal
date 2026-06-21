@@ -8,5 +8,4 @@ wget -q "--no-check-certificate" https://raw.githubusercontent.com/azroukarim/XP
 
 add + mod  stalker&xtream > openwebif : ipadresse:port 
 
-
 ![alt text](https://imgur.com/a/NDouvxa)
