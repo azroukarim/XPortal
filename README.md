@@ -6,9 +6,7 @@
 
 ```bash
 wget -q "--no-check-certificate" https://raw.githubusercontent.com/azroukarim/XPortal/refs/heads/main/install_xportal.sh -O - | /bin/sh
+```bash
 
 
 
-add + mod  stalker&xtream > openwebif : ipadresse:port 
-
-![alt text](https://imgur.com/a/NDouvxa)
