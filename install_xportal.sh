@@ -20,7 +20,7 @@ case "$PY_VER" in
         DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_14_5.tar.gz"
         ;;
     3.13.*)
-        DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-p3_13_12.tar.gz"
+        DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_13.tar.gz"
         ;;
     3.9.*)
         DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_9.tar.gz"
