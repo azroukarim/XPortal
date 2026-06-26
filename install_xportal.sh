@@ -4,6 +4,14 @@ echo "=================================================================="
 echo "   XPortal Plugin Installer"
 echo "=================================================================="
 
+# 1. Install required dependencies
+echo "[1/6] Installing dependencies..."
+opkg update >/dev/null 2>&1
+for pkg in wget python3-requests python3-twisted enigma2-plugin-systemplugins-serviceapp exteplayer3; do
+    echo "  Checking and installing $pkg..."
+    opkg install $pkg >/dev/null 2>&1
+done
+
 # Detect Python version
 PY_VER=$(python3 -c 'import sys; print("%d.%d.%d" % sys.version_info[:3])' 2>/dev/null)
 
@@ -46,7 +54,7 @@ else
     exit 1
 fi
 
-echo "[1/5] Downloading..."
+echo "[2/6] Downloading..."
 $DOWNLOAD_CMD "$TMP_DIR/$TAR_FILE" "$DOWNLOAD_URL"
 if [ $? -ne 0 ] || [ ! -f "$TMP_DIR/$TAR_FILE" ] || [ ! -s "$TMP_DIR/$TAR_FILE" ]; then
     echo "Error: Download failed. Check your internet connection."
@@ -54,7 +62,7 @@ if [ $? -ne 0 ] || [ ! -f "$TMP_DIR/$TAR_FILE" ] || [ ! -s "$TMP_DIR/$TAR_FILE" 
     exit 1
 fi
 
-echo "[2/5] Extracting $TAR_FILE..."
+echo "[3/6] Extracting $TAR_FILE..."
 cd "$TMP_DIR"
 tar -xzf "$TAR_FILE"
 if [ $? -ne 0 ]; then
@@ -67,7 +75,7 @@ if [ ! -d "$EXTRACTED_DIR" ]; then
     exit 1
 fi
 
-echo "[3/5] Installing to $DEST_DIR..."
+echo "[4/6] Installing to $DEST_DIR..."
 if [ -d "$DEST_DIR" ]; then
     echo "  Removing old version..."
     rm -rf "$DEST_DIR"
@@ -79,10 +87,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "[4/5] Cleaning up..."
+echo "[5/6] Cleaning up..."
 rm -f "$TMP_DIR/$TAR_FILE"
 
-echo "[5/5] Restarting Enigma2..."
+echo "[6/6] Restarting Enigma2..."
 killall -9 enigma2 2>/dev/null
 
 echo "=================================================================="
