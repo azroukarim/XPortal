@@ -10,3 +10,5 @@ wget -q "--no-check-certificate" https://raw.githubusercontent.com/azroukarim/XP
 
 
 ![alt text](https://c.top4top.io/p_3823ehb6w1.png) 
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/8c885733-ae84-49f4-a491-7eb1a6882fcc" />
+
