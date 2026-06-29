@@ -30,11 +30,14 @@ case "$PY_VER" in
     3.13.*)
         DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_13.tar.gz"
         ;;
+    3.12.*)
+        DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_12.tar.gz"
+        ;;
     3.9.*)
         DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_9.tar.gz"
         ;;
     *)
-        echo "Error: Python $PY_VER is not supported. Only 3.9.x, 3.13.x and 3.14.x are supported."
+        echo "Error: Python $PY_VER is not supported. Only 3.9.x, 3.12.x, 3.13.x and 3.14.x are supported."
         exit 1
         ;;
 esac
