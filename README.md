@@ -6,7 +6,7 @@
 wget -q "--no-check-certificate" https://raw.githubusercontent.com/azroukarim/XPortal/refs/heads/main/install_xportal.sh -O - | /bin/sh
 
 ```
-### ➤ add stalker && xtream server  Openwebifplugin : ipadresse:port > example 192.168.0.205:7080
+### ➤ add stalker && xtream server  Openwebif plugin : ipadresse:port > example 192.168.0.205:7080
 
 
 ![alt text](https://c.top4top.io/p_3823ehb6w1.png) 
