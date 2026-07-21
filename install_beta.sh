@@ -36,7 +36,7 @@ echo ""
 # Select download URL based on Python version
 case "$PY_VER" in
     3.14.*)
-        DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_14.tar.gz"
+        DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortals_plugin/XPortal-py3_14.tar.gz"
         ;;
     3.13.*)
         DOWNLOAD_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main/XPortal-py3_13.tar.gz"
