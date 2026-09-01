@@ -1,4 +1,3 @@
-@'
 #!/bin/sh
 
 # Colors
@@ -28,7 +27,7 @@ else
     exit 1
 fi
 
-# Detect Python version safely (Compatible with all Busybox versions)
+# Detect Python version safely
 PY_VER=$($PY_BIN -V 2>&1 | sed 's/Python //' | cut -d. -f1,2)
 PY_BITS=$($PY_BIN -c "import struct; print(struct.calcsize('P')*8)" 2>/dev/null)
 [ -z "$PY_BITS" ] && PY_BITS="32"
@@ -160,8 +159,3 @@ echo -e "  ${BLUE}→ Enigma2 is restarting now...${NC}"
 killall -9 enigma2 2>/dev/null
 
 exit 0
-'@ | Set-Content -Path "installer.sh" -Encoding UTF8
-
-git add installer.sh
-git commit -m "Fix python version detection for busybox sh"
-git push origin main
