@@ -7,7 +7,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 echo ""
 echo -e "${CYAN}==================================================================${NC}"
@@ -17,15 +17,21 @@ echo ""
 
 BASE_URL="https://github.com/azroukarim/XPortal/raw/refs/heads/main"
 
-# 1. Detect Python version
-PY_BIN=$(command -v python3 2>/dev/null)
-[ -z "$PY_BIN" ] && PY_BIN=$(command -v python 2>/dev/null)
-if [ -z "$PY_BIN" ]; then
+# 1. Detect Python binary
+PY_BIN=""
+if command -v python3 >/dev/null 2>&1; then
+    PY_BIN="python3"
+elif command -v python >/dev/null 2>&1; then
+    PY_BIN="python"
+else
     echo -e "${RED}✘ Error: Python not found on this system.${NC}"
     exit 1
 fi
-PY_VER=$($PY_BIN -c 'import sys; print("%d.%d" % sys.version_info[:2])' 2>/dev/null)
-PY_BITS=$($PY_BIN -c 'import sys; print(64 if sys.maxsize > 2**32 else 32)' 2>/dev/null)
+
+# Detect Python version safely (Compatible with all Busybox versions)
+PY_VER=$($PY_BIN -V 2>&1 | sed 's/Python //' | cut -d. -f1,2)
+PY_BITS=$($PY_BIN -c "import struct; print(struct.calcsize('P')*8)" 2>/dev/null)
+[ -z "$PY_BITS" ] && PY_BITS="32"
 
 # 2. Detect Architecture
 MACHINE=$(uname -m)
@@ -50,7 +56,13 @@ case "$ARCH" in
 esac
 
 FOUND=0
-for v in $SUPPORTED; do [ "$v" = "$PY_VER" ] && FOUND=1; done
+for v in $SUPPORTED; do
+    if [ "$v" = "$PY_VER" ]; then
+        FOUND=1
+        break
+    fi
+done
+
 if [ "$FOUND" != "1" ]; then
     echo -e "${RED}✘ Error: no build for $ARCH with Python $PY_VER.${NC}"
     echo -e "${YELLOW}  Available for $ARCH: $SUPPORTED${NC}"
@@ -82,7 +94,7 @@ TMP_DIR="/tmp"
 EXTRACTED_DIR="$TMP_DIR/XPortal"
 DEST_DIR="/usr/lib/enigma2/python/Plugins/Extensions/XPortal"
 
-# 6. Check Download Tool (wget or curl)
+# 6. Check Download Tool
 if command -v wget >/dev/null 2>&1; then
     DOWNLOAD_CMD="wget --no-check-certificate -qO"
 elif command -v curl >/dev/null 2>&1; then
@@ -139,10 +151,8 @@ echo -e "${CYAN}================================================================
 echo -e "${GREEN}             Installation completed successfully!                 ${NC}"
 echo -e "${CYAN}==================================================================${NC}"
 echo ""
-echo -e "${YELLOW}  A huge THANK YOU to everyone who supported this plugin,${NC}"
-echo -e "${YELLOW}  whether from near or far. Special thanks to all the users${NC}"
-echo -e "${YELLOW}  who tested the plugin on their receivers and helped improve it.${NC}"
-echo -e "${YELLOW}  Your support means everything! Enjoy XPortal!${NC}"
+echo -e "${YELLOW}  A huge THANK YOU to everyone who supported this plugin!${NC}"
+echo -e "${YELLOW}  Enjoy XPortal!${NC}"
 echo ""
 echo -e "${CYAN}==================================================================${NC}"
 echo -e "  ${BLUE}→ Enigma2 is restarting now...${NC}"
@@ -153,5 +163,5 @@ exit 0
 '@ | Set-Content -Path "installer.sh" -Encoding UTF8
 
 git add installer.sh
-git commit -m "Add installer.sh script"
+git commit -m "Fix python version detection for busybox sh"
 git push origin main
